@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
+      POSTGRES_USER: alpha
+      POSTGRES_DB: alpha
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      alpha:
+        ipv4_address: 172.16.1.250
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      alpha:
+        ipv4_address: 172.16.1.251
+
+networks:
+  alpha:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.1.0/24
+          gateway: 172.16.1.1
